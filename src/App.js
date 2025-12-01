@@ -22,14 +22,7 @@ function Empty() {
   return <p>Noch keine Todos vorhanden</p>;
 }
 
-function Entries({
-  inputCheckbox,
-  HandleCheckBox,
-  inputValue,
-  DeleteEntry,
-  index,
-  entry,
-}) {
+function Entries({ HandleCheckBox, DeleteEntry, index, entry }) {
   return (
     <div className="entries">
       <div className="entries__left">
@@ -40,9 +33,11 @@ function Entries({
           onChange={() => HandleCheckBox(index)}
         />
         <span
-          style={{
-            textDecoration: entry.checked ? "line-through" : "none",
-          }}
+          className={
+            entry.checked
+              ? "entries__text entries__text--checked"
+              : "entries__text"
+          }
         >
           {entry.text}
         </span>
