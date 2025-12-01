@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import { useState } from "react";
 import "./scss/style.scss";
 
@@ -29,16 +28,24 @@ function Entries({
   inputValue,
   DeleteEntry,
   index,
+  entry,
 }) {
   return (
     <div className="entries">
       <div className="entries__left">
         <input
           className="entries__user"
-          onChange={HandleCheckBox}
           type="checkbox"
+          checked={entry.checked}
+          onChange={() => HandleCheckBox(index)}
         />
-        {inputValue}
+        <span
+          style={{
+            textDecoration: entry.checked ? "line-through" : "none",
+          }}
+        >
+          {entry.text}
+        </span>
       </div>
       <button
         onClick={() => DeleteEntry(index)}
@@ -57,7 +64,7 @@ function App() {
 
   function UserEntries() {
     if (inputValue.trim() === "") return;
-    setEntries([...entries, inputValue]);
+    setEntries([...entries, { text: inputValue, checked: false }]);
     setInputValue("");
   }
 
@@ -66,9 +73,11 @@ function App() {
     console.log(changeEvent.target.value);
   }
 
-  function HandleCheckBox(changeEvent) {
-    setInputCheckbbox(changeEvent.target.checked);
-    console.log(changeEvent.target.checked);
+  function HandleCheckBox(index) {
+    const updated = entries.map((entry, i) =>
+      i === index ? { ...entry, checked: !entry.checked } : entry
+    );
+    setEntries(updated);
   }
 
   function DeleteEntry(indexToDelete) {
@@ -87,9 +96,9 @@ function App() {
           key={index}
           inputCheckbox={inputCheckbox}
           HandleCheckBox={HandleCheckBox}
-          inputValue={entry}
           DeleteEntry={DeleteEntry}
           index={index}
+          entry={entry}
         />
       ))}
       {entries.length === 0 && <Empty />}
