@@ -77,4 +77,8 @@ code {
     display: flex;
     gap: 1rem;
   }
+
+  &__text--checked {
+    text-decoration: line-through;
+  }
 }
